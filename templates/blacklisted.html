@@ -1,0 +1,14 @@
+{% extends "_layout.html" %}
+{% block body %}
+<div class="box">
+  <p>Robots are forbidden to withdraw passwords.</p>
+  <a id="btn-not-a-robot">I am not a robot</a>
+</div>
+{% endblock %}
+
+
+{% block app %}
+  <script>
+    $('btn-not-a-robot').addEventListener("click", RedirectWithoutBlacklist);
+  </script>
+{% endblock %}

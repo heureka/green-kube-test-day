@@ -1,0 +1,45 @@
+{% extends "_layout.html" %}
+
+{% block body %}
+  <div id="container">
+    <div id="step1" class="step">
+      <div>
+        <textarea name="input" class="io-display" autocomplete="off" id="input" autofocus placeholder="What do you want to share?"></textarea>
+      </div>
+      <p id="redirect-notice" class="tooltip"><span class="key">NOTICE</span> User withdrawing this URL will be automatically redirected</p>
+      <p id="tooltip-single" class="tooltip"><span class="key">ENTER</span>&nbsp;will&nbsp;submit, <span class="key">SHIFT</span>&nbsp;+&nbsp;<span class="key">ENTER</span>&nbsp;will&nbsp;create&nbsp;a&nbsp;newline</p>
+      <p id="tooltip-multi" class="tooltip"><span class="key">CTRL</span>&nbsp;+&nbsp;<span class="key">ENTER</span>&nbsp;will&nbsp;submit, <span class="key">ENTER</span>&nbsp;will&nbsp;create&nbsp;a&nbsp;newline</p>
+      <a id="btn-submit" class="animated fadeIn">ENCRYPT AND SHARE</a>
+      <p id="info" class="warn">Read "<span id="link-rollup" class="link">How it works</span>" before use to make sure your secret is safe!</p>
+    </div>
+
+    <div id="step2" class="step">
+      <textarea name="output" class="io-display animated fadeInDownBig" id="output"></textarea>
+      <p id="tooltip-time" class="tooltip"><span class="key">NOTICE</span> Password will expire in {{ ttl }} minutes</p>
+      <a href="/">Send other</a>
+      <a id="btn-copy">Copy to clipboard</a>
+    </div>
+  </div>
+  <div id="rollup">
+    <div id="rollup-inner" class="hidden">
+      {% include '_howto.html' %}
+    </div>
+    <a id="btn-how-it-works" class="btn-stick-top btn">How it works</a>
+  </div>
+{% endblock %}
+
+{% block app %}
+  <script>
+    $('redirect-notice').style.display = 'none';
+    $('btn-submit').style.display = 'none';
+    $('btn-submit').addEventListener("click", doTranslation);
+
+    $('container').addEventListener("click", hideRollup);
+    $('btn-how-it-works').addEventListener("click", toggleRollup);
+    $('link-rollup').addEventListener("click", toggleRollup);
+
+    $('btn-copy').addEventListener("click", copyToClipboard);
+    var input = $('input');
+    input.addEventListener("keyup", function(ev) { handleKeyDown(ev, $('input'), multiline); });
+  </script>
+{% endblock %}
