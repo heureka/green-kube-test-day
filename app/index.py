@@ -1,5 +1,6 @@
 import logging
 import pickle
+import config
 from time import time
 from hashlib import md5
 from base64 import urlsafe_b64encode
@@ -12,10 +13,10 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__, static_folder='public')
 r = redis.StrictRedis(
-    host='localhost',
-    port=6379,
-    db=0,
-    password='heslo'
+    host=config.REDIS_HOST,
+    port=config.REDIS_PORT,
+    db=config.REDIS_DB,
+    password=config.REDIS_PASSWORD
 )
 
 TTL = 3600
@@ -76,7 +77,7 @@ def get_pass(uuid):
 
 @app.route('/', methods=['get'])
 def index():
-    ttl = int(TTL/60)
+    ttl = config.TTL
     return render_template('index.html', ttl=ttl)
 
 
@@ -86,7 +87,7 @@ def robots():
 
 
 if __name__ == '__main__':
-    port = 5000
-    host = '0.0.0.0'
+    port = config.APP_PORT
+    host = config.APP_HOST
 
     app.run(host=host, port=port, debug=True)
